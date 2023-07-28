@@ -1,11 +1,10 @@
 ﻿namespace Shaky_Easy_User.Contracts.V1
 {
-    public class DTOs
-    {
+
         #region Profile
 
         #region responses
-        public record GetProfileResponse(Guid Id, string name);
+        public record ProfileResponse(Guid Id, string name);
 
 
         #endregion
@@ -14,10 +13,11 @@
         
         public record CreateProfileRequest(string name);
 
+        public record UpdateProfileRequest(string name);
 
-        #endregion
+    #endregion
 
 
-        #endregion
-    }
+    #endregion
 }
+
