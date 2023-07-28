@@ -3,7 +3,7 @@ using Shaky_Easy_User.Settings;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Shaky_Easy_User.Controllers
+namespace Shaky_Easy_User.Controllers.V1
 {
     public class ProfileController : ControllerBase
     {
@@ -13,7 +13,7 @@ namespace Shaky_Easy_User.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [HttpGet((ApiRoutes.Profile.Get))]
+        [HttpGet(ApiRoutes.Profile.Get)]
         public string Get(int id)
         {
             return id.ToString();
