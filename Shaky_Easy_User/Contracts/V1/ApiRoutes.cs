@@ -9,13 +9,17 @@
         private const string _base = _root + "/" + _version;
 
 
-        public static class Profile
+        public static class Profiles
         {
-            public const string GetAll = _base + "/profiles";
+            public const string GetAll = _base + "/profiles"; // http://localhost:5295/api/v1/profiles
 
-            public const string Get = _base + "/profiles/{id}";
+            public const string Get = _base + "/profiles/{id:Guid}";
 
-            //public const string Post = _base + "/profile/{id}";
+            public const string Post = _base + "/profiles";
+
+            public const string Put = _base + "/profiles/{id:Guid}";
+
+            public const string Delete = _base + "/profiles/{id:Guid}";
 
         }
     }
