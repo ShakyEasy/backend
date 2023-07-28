@@ -1,35 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shaky_Easy_User.Contracts.V1;
+using Shaky_Easy_User.Domain;
+using Shaky_Easy_User.Services;
+using static Shaky_Easy_User.Contracts.V1.ApiRoutes;
 
 namespace Shaky_Easy_User.Controllers.V1
 {
     public class ProfileController : ControllerBase
     {
-        [HttpGet(ApiRoutes.Profile.GetAll)]
-        public IActionResult Get()
+        private readonly IProfileService profileService;
+
+        public ProfileController(IProfileService profileService)
         {
-            return new string[] { "value1", "value2" };
+            this.profileService = profileService;
         }
 
-        [HttpGet(ApiRoutes.Profile.Get)]
-        public IActionResult Get(int id)
+        [HttpGet(ApiRoutes.Profiles.GetAll)]
+        public IActionResult GetAll()
         {
-            return id.ToString();
+            var profiles = profileService.GetProfiles();
+
+            if(profiles is not null) return Ok(profiles);
+
+            return NoContent();
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] string value)
+        [HttpGet(ApiRoutes.Profiles.Get)]
+        public IActionResult Get([FromRoute] Guid id)
         {
+            var profile = profileService.GetProfileById(id);
+
+            if (profile is not null) return Ok(profile);
+
+            return NotFound();
+            
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        [HttpPost(ApiRoutes.Profiles.Post)]
+        public IActionResult Post([FromBody] CreateProfileRequest profileRequest)
         {
+            var profile = new Profile( Guid.NewGuid(), profileRequest.name);
+
+            profileService.CreateProfile(profile);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+
+            var location = baseUrl + ApiRoutes.Profiles.Get.Replace("{id:Guid}", profile.Id.ToString()) ;
+
+            var profileResponse = new ProfileResponse(profile.Id, profile.Name);
+
+            return Created(location, profileResponse);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        [HttpPut(ApiRoutes.Profiles.Put)]
+        public IActionResult Put([FromRoute] Guid id, [FromBody] UpdateProfileRequest profileRequest)
         {
+            var profile = new Profile(id, profileRequest.name);
+
+            var updated = profileService.UpdateProfile(profile);
+
+            if (updated)  return Ok(profile);
+
+            return NotFound();
+        }
+
+        [HttpDelete(ApiRoutes.Profiles.Delete)]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var deleted = profileService.DeleteProfile(id);
+
+            if (deleted) return NoContent();
+
+            return NotFound();
+
         }
     }
 }
