@@ -1,36 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Shaky_Easy_User.Settings;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Shaky_Easy_User.Contracts.V1;
 
 namespace Shaky_Easy_User.Controllers.V1
 {
     public class ProfileController : ControllerBase
     {
         [HttpGet(ApiRoutes.Profile.GetAll)]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
             return new string[] { "value1", "value2" };
         }
 
         [HttpGet(ApiRoutes.Profile.Get)]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
             return id.ToString();
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] string value)
         {
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] string value)
         {
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
         }
     }
