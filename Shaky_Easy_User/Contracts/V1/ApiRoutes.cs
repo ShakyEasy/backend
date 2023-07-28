@@ -1,4 +1,4 @@
-﻿namespace Shaky_Easy_User.Settings
+﻿namespace Shaky_Easy_User.Contracts.V1
 {
     public static class ApiRoutes
     {
